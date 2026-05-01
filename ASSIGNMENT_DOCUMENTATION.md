@@ -303,7 +303,7 @@ It’s like letting one person use something at a time so no one messes things u
 ## Part 6: GitHub Repository Information
 
 Repository URL:
-[حط رابط GitHub هنا]
+https://github.com/khaled-naif-446/OS-Assignment3-khaled-naif-4465/tree/main
 
 Number of commits:
 4
