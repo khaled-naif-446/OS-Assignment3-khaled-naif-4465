@@ -89,7 +89,7 @@ class Process implements Runnable {
     private String name;
     private int burstTime;
     private int timeQuantum;
-    private int remainingTime; 
+    private int remainingTime;
     private long creationTime;
     private long startTime;
     private long completionTime;
@@ -118,7 +118,7 @@ class Process implements Runnable {
                 
                 int runTime = Math.min(timeQuantum, remainingTime);
                 
-                String message = "  ▶ " + name + " (Priority: " + priority + ") executing quantum [" + runTime + "ms]";
+                String message = "  â¶ " + name + " (Priority: " + priority + ") executing quantum [" + runTime + "ms]";
                 System.out.println(Colors.BRIGHT_GREEN + message + Colors.RESET);
                 
                 SharedResources.logExecution(name + " started quantum execution");
@@ -131,26 +131,26 @@ class Process implements Runnable {
                         Thread.sleep(stepTime);
                         int quantumProgress = (i * 100) / steps;
                         String quantumBar = createProgressBar(quantumProgress, 15);
-                        System.out.print("\r  " + Colors.YELLOW + "⚡" + Colors.RESET + 
+                        System.out.print("\r  " + Colors.YELLOW + "â¡" + Colors.RESET + 
                                         " Quantum progress: " + quantumBar);
                     }
                     System.out.println();
                     
                 } catch (InterruptedException e) {
-                    System.out.println(Colors.RED + "\n  ✗ " + name + " was interrupted." + Colors.RESET);
+                    System.out.println(Colors.RED + "\n  â " + name + " was interrupted." + Colors.RESET);
                 }
                 
                 remainingTime -= runTime;
                 int overallProgress = (int) (((double)(burstTime - remainingTime) / burstTime) * 100);
                 String overallProgressBar = createProgressBar(overallProgress, 20);
                 
-                System.out.println(Colors.YELLOW + "  ⏸ " + Colors.CYAN + name + Colors.RESET + 
+                System.out.println(Colors.YELLOW + "  â¸ " + Colors.CYAN + name + Colors.RESET + 
                                   " completed quantum " + Colors.BRIGHT_YELLOW + runTime + "ms" + Colors.RESET + 
-                                  " │ Overall progress: " + overallProgressBar);
+                                  " â Overall progress: " + overallProgressBar);
                 System.out.println(Colors.MAGENTA + "     Remaining time: " + remainingTime + "ms" + Colors.RESET);
                 
                 if (remainingTime > 0) {
-                    System.out.println(Colors.BLUE + "  ↻ " + Colors.CYAN + name + Colors.RESET + 
+                    System.out.println(Colors.BLUE + "  â» " + Colors.CYAN + name + Colors.RESET + 
                                       " yields CPU for context switch" + Colors.RESET);
                     SharedResources.logExecution(name + " yielded CPU");
                 } else {
@@ -159,7 +159,7 @@ class Process implements Runnable {
                     SharedResources.addWaitingTime(waitingTime);
                     SharedResources.incrementCompletedProcess();
                     SharedResources.logExecution(name + " completed execution");
-                    System.out.println(Colors.BRIGHT_GREEN + "  ✓ " + Colors.BOLD + Colors.CYAN + name + 
+                    System.out.println(Colors.BRIGHT_GREEN + "  â " + Colors.BOLD + Colors.CYAN + name + 
                                       Colors.RESET + Colors.BRIGHT_GREEN + " finished execution!" + 
                                       Colors.RESET);
                 }
@@ -169,7 +169,7 @@ class Process implements Runnable {
                 SharedResources.cpuSemaphore.release();
             }
         } catch (InterruptedException e) {
-            System.out.println(Colors.RED + "  ✗ " + name + " semaphore interrupted." + Colors.RESET);
+            System.out.println(Colors.RED + "  â " + name + " semaphore interrupted." + Colors.RESET);
         }
     }
     
@@ -178,9 +178,9 @@ class Process implements Runnable {
         StringBuilder bar = new StringBuilder("[");
         for (int i = 0; i < width; i++) {
             if (i < filled) {
-                bar.append(Colors.GREEN + "█" + Colors.RESET);
+                bar.append(Colors.GREEN + "â" + Colors.RESET);
             } else {
-                bar.append(Colors.WHITE + "░" + Colors.RESET);
+                bar.append(Colors.WHITE + "â" + Colors.RESET);
             }
         }
         bar.append("] ").append(progress).append("%");
@@ -191,7 +191,7 @@ class Process implements Runnable {
         try {
             SharedResources.cpuSemaphore.acquire();
             try {
-                System.out.println(Colors.BRIGHT_CYAN + "  ⚡ " + Colors.BOLD + Colors.CYAN + name + 
+                System.out.println(Colors.BRIGHT_CYAN + "  â¡ " + Colors.BOLD + Colors.CYAN + name + 
                                   Colors.RESET + Colors.BRIGHT_CYAN + " is the last process, running to completion" + 
                                   Colors.RESET + " [" + remainingTime + "ms]");
                 Thread.sleep(remainingTime);
@@ -202,14 +202,14 @@ class Process implements Runnable {
                 SharedResources.addWaitingTime(waitingTime);
                 SharedResources.incrementCompletedProcess();
                 
-                System.out.println(Colors.BRIGHT_GREEN + "  ✓ " + Colors.BOLD + Colors.CYAN + name + 
+                System.out.println(Colors.BRIGHT_GREEN + "  â " + Colors.BOLD + Colors.CYAN + name + 
                                   Colors.RESET + Colors.BRIGHT_GREEN + " finished execution!" + Colors.RESET);
                 System.out.println();
             } finally {
                 SharedResources.cpuSemaphore.release();
             }
         } catch (InterruptedException e) {
-            System.out.println(Colors.RED + "  ✗ " + name + " was interrupted." + Colors.RESET);
+            System.out.println(Colors.RED + "  â " + name + " was interrupted." + Colors.RESET);
         }
     }
     
@@ -240,33 +240,33 @@ public class SchedulerSimulationSync {
         List<Process> allProcesses = new ArrayList<>();
         
         System.out.println("\n" + Colors.BOLD + Colors.BRIGHT_CYAN + 
-                          "╔═══════════════════════════════════════════════════════════════════════════════════════╗" + 
+                          "âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ" + 
                           Colors.RESET);
-        System.out.println(Colors.BOLD + Colors.BRIGHT_CYAN + "║" + Colors.RESET + 
+        System.out.println(Colors.BOLD + Colors.BRIGHT_CYAN + "â" + Colors.RESET + 
                           Colors.BG_BLUE + Colors.BRIGHT_WHITE + Colors.BOLD + 
                           "              CPU SCHEDULER SIMULATION WITH SYNCHRONIZATION                       " + 
-                          Colors.RESET + Colors.BOLD + Colors.BRIGHT_CYAN + "║" + Colors.RESET);
+                          Colors.RESET + Colors.BOLD + Colors.BRIGHT_CYAN + "â" + Colors.RESET);
         System.out.println(Colors.BOLD + Colors.BRIGHT_CYAN + 
-                          "╠═══════════════════════════════════════════════════════════════════════════════════════╣" + 
+                          "â ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ£" + 
                           Colors.RESET);
-        System.out.println(Colors.BOLD + Colors.BRIGHT_CYAN + "║" + Colors.RESET + 
-                          Colors.YELLOW + "  ⚙ Processes:     " + Colors.RESET + Colors.BRIGHT_YELLOW + 
+        System.out.println(Colors.BOLD + Colors.BRIGHT_CYAN + "â" + Colors.RESET + 
+                          Colors.YELLOW + "  â Processes:     " + Colors.RESET + Colors.BRIGHT_YELLOW + 
                           String.format("%-65s", numProcesses) + 
-                          Colors.BOLD + Colors.BRIGHT_CYAN + "║" + Colors.RESET);
-        System.out.println(Colors.BOLD + Colors.BRIGHT_CYAN + "║" + Colors.RESET + 
-                          Colors.YELLOW + "  ⏱ Time Quantum:  " + Colors.RESET + Colors.BRIGHT_YELLOW + 
+                          Colors.BOLD + Colors.BRIGHT_CYAN + "â" + Colors.RESET);
+        System.out.println(Colors.BOLD + Colors.BRIGHT_CYAN + "â" + Colors.RESET + 
+                          Colors.YELLOW + "  â± Time Quantum:  " + Colors.RESET + Colors.BRIGHT_YELLOW + 
                           String.format("%-65s", timeQuantum + "ms") + 
-                          Colors.BOLD + Colors.BRIGHT_CYAN + "║" + Colors.RESET);
-        System.out.println(Colors.BOLD + Colors.BRIGHT_CYAN + "║" + Colors.RESET + 
-                          Colors.YELLOW + "  🔑 Student ID:    " + Colors.RESET + Colors.BRIGHT_YELLOW + 
+                          Colors.BOLD + Colors.BRIGHT_CYAN + "â" + Colors.RESET);
+        System.out.println(Colors.BOLD + Colors.BRIGHT_CYAN + "â" + Colors.RESET + 
+                          Colors.YELLOW + "  ð Student ID:    " + Colors.RESET + Colors.BRIGHT_YELLOW + 
                           String.format("%-65s", studentID) + 
-                          Colors.BOLD + Colors.BRIGHT_CYAN + "║" + Colors.RESET);
-        System.out.println(Colors.BOLD + Colors.BRIGHT_CYAN + "║" + Colors.RESET + 
-                          Colors.YELLOW + "  🔒 Sync Mode:     " + Colors.RESET + Colors.BRIGHT_YELLOW + 
+                          Colors.BOLD + Colors.BRIGHT_CYAN + "â" + Colors.RESET);
+        System.out.println(Colors.BOLD + Colors.BRIGHT_CYAN + "â" + Colors.RESET + 
+                          Colors.YELLOW + "  ð Sync Mode:     " + Colors.RESET + Colors.BRIGHT_YELLOW + 
                           String.format("%-65s", "Fine-Grained Locks & Semaphores") + 
-                          Colors.BOLD + Colors.BRIGHT_CYAN + "║" + Colors.RESET);
+                          Colors.BOLD + Colors.BRIGHT_CYAN + "â" + Colors.RESET);
         System.out.println(Colors.BOLD + Colors.BRIGHT_CYAN + 
-                          "╚═══════════════════════════════════════════════════════════════════════════════════════╝" + 
+                          "âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ" + 
                           Colors.RESET + "\n");
         
         for (int i = 1; i <= numProcesses; i++) {
@@ -279,25 +279,25 @@ public class SchedulerSimulationSync {
         }
         
         System.out.println(Colors.BOLD + Colors.GREEN + 
-                          "╔════════════════════════════════════════════════════════════════════════════════╗" + 
+                          "ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ" + 
                           Colors.RESET);
-        System.out.println(Colors.BOLD + Colors.GREEN + "║" + Colors.RESET + 
+        System.out.println(Colors.BOLD + Colors.GREEN + "â" + Colors.RESET + 
                           Colors.BG_GREEN + Colors.WHITE + Colors.BOLD + 
-                          "                        ▶  SCHEDULER STARTING  ◀                               " + 
-                          Colors.RESET + Colors.BOLD + Colors.GREEN + "║" + Colors.RESET);
+                          "                        â¶  SCHEDULER STARTING  â                               " + 
+                          Colors.RESET + Colors.BOLD + Colors.GREEN + "â" + Colors.RESET);
         System.out.println(Colors.BOLD + Colors.GREEN + 
-                          "╚════════════════════════════════════════════════════════════════════════════════╝" + 
+                          "ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ" + 
                           Colors.RESET + "\n");
         
         while (!processQueue.isEmpty()) {
             Thread currentThread = processQueue.poll();
             
-            System.out.println(Colors.BOLD + Colors.MAGENTA + "┌─ Ready Queue " + "─".repeat(65) + Colors.RESET);
-            System.out.print(Colors.MAGENTA + "│ " + Colors.RESET + Colors.BRIGHT_WHITE + "[" + Colors.RESET);
+            System.out.println(Colors.BOLD + Colors.MAGENTA + "ââ Ready Queue " + "â".repeat(65) + Colors.RESET);
+            System.out.print(Colors.MAGENTA + "â " + Colors.RESET + Colors.BRIGHT_WHITE + "[" + Colors.RESET);
             int queueCount = 0;
             for (Thread thread : processQueue) {
                 Process process = processMap.get(thread);
-                if (queueCount > 0) System.out.print(Colors.WHITE + " → " + Colors.RESET);
+                if (queueCount > 0) System.out.print(Colors.WHITE + " â " + Colors.RESET);
                 System.out.print(Colors.BRIGHT_CYAN + process.getName() + Colors.RESET);
                 queueCount++;
             }
@@ -305,7 +305,7 @@ public class SchedulerSimulationSync {
                 System.out.print(Colors.YELLOW + "empty" + Colors.RESET);
             }
             System.out.println(Colors.BRIGHT_WHITE + "]" + Colors.RESET);
-            System.out.println(Colors.BOLD + Colors.MAGENTA + "└" + "─".repeat(79) + Colors.RESET + "\n");
+            System.out.println(Colors.BOLD + Colors.MAGENTA + "â" + "â".repeat(79) + Colors.RESET + "\n");
             
             currentThread.start();
             
@@ -321,8 +321,8 @@ public class SchedulerSimulationSync {
                 if (!processQueue.isEmpty()) {
                     addProcessToQueue(process, processQueue, processMap);
                 } else {
-                    System.out.println(Colors.BRIGHT_YELLOW + "  ⚠ " + Colors.CYAN + process.getName() + 
-                                      Colors.RESET + Colors.YELLOW + " is the last process → running to completion" + 
+                    System.out.println(Colors.BRIGHT_YELLOW + "  â  " + Colors.CYAN + process.getName() + 
+                                      Colors.RESET + Colors.YELLOW + " is the last process â running to completion" + 
                                       Colors.RESET);
                     process.runToCompletion();
                 }
@@ -338,26 +338,26 @@ public class SchedulerSimulationSync {
         processQueue.add(thread);
         processMap.put(thread, process);
         
-        System.out.println(Colors.BLUE + "  ➕ " + Colors.BOLD + Colors.CYAN + process.getName() + 
+        System.out.println(Colors.BLUE + "  â " + Colors.BOLD + Colors.CYAN + process.getName() + 
                           Colors.RESET + Colors.BLUE + " (Priority: " + process.getPriority() + ")" +
                           " added to ready queue" + Colors.RESET + 
-                          " │ Burst time: " + Colors.YELLOW + process.getBurstTime() + "ms" + 
+                          " â Burst time: " + Colors.YELLOW + process.getBurstTime() + "ms" + 
                           Colors.RESET);
     }
     
     public static void printStatistics(List<Process> processes, int timeQuantum) {
         System.out.println(Colors.BOLD + Colors.BRIGHT_GREEN + 
-                          "╔════════════════════════════════════════════════════════════════════════════════╗" + 
+                          "ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ" + 
                           Colors.RESET);
-        System.out.println(Colors.BOLD + Colors.BRIGHT_GREEN + "║" + Colors.RESET + 
+        System.out.println(Colors.BOLD + Colors.BRIGHT_GREEN + "â" + Colors.RESET + 
                           Colors.BG_GREEN + Colors.WHITE + Colors.BOLD + 
-                          "                     ✓  ALL PROCESSES COMPLETED  ✓                            " + 
-                          Colors.RESET + Colors.BOLD + Colors.BRIGHT_GREEN + "║" + Colors.RESET);
+                          "                     â  ALL PROCESSES COMPLETED  â                            " + 
+                          Colors.RESET + Colors.BOLD + Colors.BRIGHT_GREEN + "â" + Colors.RESET);
         System.out.println(Colors.BOLD + Colors.BRIGHT_GREEN + 
-                          "╚════════════════════════════════════════════════════════════════════════════════╝" + 
+                          "ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ" + 
                           Colors.RESET + "\n");
         
-        System.out.println(Colors.BOLD + Colors.BRIGHT_CYAN + "═══ Synchronization Statistics ═══" + Colors.RESET);
+        System.out.println(Colors.BOLD + Colors.BRIGHT_CYAN + "âââ Synchronization Statistics âââ" + Colors.RESET);
         System.out.println(Colors.YELLOW + "Total Context Switches: " + Colors.BRIGHT_YELLOW + 
                           SharedResources.contextSwitchCount + Colors.RESET);
         System.out.println(Colors.YELLOW + "Total Completed Processes: " + Colors.BRIGHT_YELLOW + 
@@ -368,10 +368,10 @@ public class SchedulerSimulationSync {
                           (SharedResources.totalWaitingTime / processes.size()) + "ms" + Colors.RESET);
         System.out.println();
         
-        System.out.println(Colors.BOLD + Colors.BRIGHT_CYAN + "═══ Process Summary Table ═══" + Colors.RESET);
+        System.out.println(Colors.BOLD + Colors.BRIGHT_CYAN + "âââ Process Summary Table âââ" + Colors.RESET);
         System.out.println(Colors.BOLD + String.format("%-10s %-12s %-12s %-12s", 
                           "Process", "Priority", "Burst Time", "Waiting Time") + Colors.RESET);
-        System.out.println("─".repeat(48));
+        System.out.println("â".repeat(48));
         
         for (Process p : processes) {
             System.out.println(String.format("%-10s %-12d %-12d %-12d", 
@@ -379,7 +379,7 @@ public class SchedulerSimulationSync {
         }
         System.out.println();
         
-        System.out.println(Colors.BOLD + Colors.BRIGHT_CYAN + "═══ Execution Log Summary ═══" + Colors.RESET);
+        System.out.println(Colors.BOLD + Colors.BRIGHT_CYAN + "âââ Execution Log Summary âââ" + Colors.RESET);
         System.out.println(Colors.YELLOW + "Total log entries: " + Colors.BRIGHT_YELLOW + 
                           SharedResources.executionLog.size() + Colors.RESET);
         System.out.println();
