@@ -1,7 +1,9 @@
 # Assignment 3 - Complete Documentation
 
 Student Name: khaled-naif
+
 Student ID: 446540016
+
 Date Submitted: May 1, 2026
 
 ---
