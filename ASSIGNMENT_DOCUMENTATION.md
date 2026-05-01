@@ -10,7 +10,7 @@ Date Submitted: May 1, 2026
 
 ## 🎥 VIDEO DEMONSTRATION LINK (REQUIRED)
 
-Video Link: [حط رابط Google Drive هنا]
+Video Link: https://drive.google.com/file/d/1P_V48Tto2a_ItW1iMoaKvTkBEXNXUAm3/view?usp=sharing
 
 Video filename: 446540016_Assignment3_Synchronization.mp4
 
