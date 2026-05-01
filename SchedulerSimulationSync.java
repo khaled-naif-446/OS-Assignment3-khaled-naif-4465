@@ -89,7 +89,7 @@ class Process implements Runnable {
     private String name;
     private int burstTime;
     private int timeQuantum;
-    private int remainingTime;
+    private int remainingTime; 
     private long creationTime;
     private long startTime;
     private long completionTime;
