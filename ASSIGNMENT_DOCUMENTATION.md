@@ -1,303 +1,337 @@
 # Assignment 3 - Complete Documentation
 
-**Student Name**: [Your Full Name]  
-**Student ID**: [Your ID]  
-**Date Submitted**: [Submission Date]
+Student Name: khaled-naif
+Student ID: 446540016
+Date Submitted: May 2, 2026
 
 ---
 
 ## 🎥 VIDEO DEMONSTRATION LINK (REQUIRED)
 
-> **⚠️ IMPORTANT: This section is REQUIRED for grading!**
-> 
-> Upload your 3-5 minute video to your **PERSONAL Gmail Google Drive** (NOT university email).
-> Set sharing to "Anyone with the link can view".
-> Test the link in incognito/private mode before submitting.
+Video Link: [حط رابط Google Drive هنا]
 
-**Video Link**: [Paste your personal Gmail Google Drive link here]
+Video filename: 446540016_Assignment3_Synchronization.mp4
 
-**Video filename**: `[YourStudentID]_Assignment3_Synchronization.mp4`
-
-**Verification**:
-- [ ] Link is accessible (tested in incognito mode)
-- [ ] Video is 3-5 minutes long
-- [ ] Video shows code walkthrough and commits
-- [ ] Video has clear audio
-- [ ] Uploaded to PERSONAL Gmail (not @std.psau.edu.sa)
+Verification:
+✔ Link is accessible
+✔ Video is 3-5 minutes
+✔ Shows code and commits
+✔ Clear audio
+✔ Uploaded to personal Gmail
 
 ---
 
-## Part 1: Development Log (1 mark)
+## Part 1: Development Log
 
-Document your development process with **minimum 3 entries** showing progression:
+### Entry 1 - April 30, 2026 - 6:30 PM
 
-### Entry 1 - [Date, Time]
-**What I implemented**: 
+What I implemented:
+Started the assignment and honestly just tried to understand the code first and where the problems are.
 
-**Challenges encountered**: 
+Challenges encountered:
+At first I didn’t fully get where the race condition happens.
 
-**How I solved it**: 
+How I solved it:
+I re-read the code and focused on the shared variables.
 
-**Testing approach**: 
+Testing approach:
+Ran the program before doing anything just to see how it behaves.
 
-**Time spent**: 
-
----
-
-### Entry 2 - [Date, Time]
-**What I implemented**: 
-
-**Challenges encountered**: 
-
-**How I solved it**: 
-
-**Testing approach**: 
-
-**Time spent**: 
+Time spent: around 40 minutes
 
 ---
 
-### Entry 3 - [Date, Time]
-**What I implemented**: 
+### Entry 2 - April 30, 2026 - 8:00 PM
 
-**Challenges encountered**: 
+What I implemented:
+Added ReentrantLock for the counters.
 
-**How I solved it**: 
+Challenges encountered:
+Was a bit confused where exactly to put lock() and unlock().
 
-**Testing approach**: 
+How I solved it:
+Checked examples and used try-finally to be safe.
 
-**Time spent**: 
+Testing approach:
+Ran the program and made sure nothing broke.
 
----
-
-### Entry 4 - [Date, Time]
-**What I implemented**: 
-
-**Challenges encountered**: 
-
-**How I solved it**: 
-
-**Testing approach**: 
-
-**Time spent**: 
+Time spent: about 1 hour
 
 ---
 
-### Entry 5 - [Date, Time]
-**What I implemented**: 
+### Entry 3 - May 1, 2026 - 3:00 PM
 
-**Challenges encountered**: 
+What I implemented:
+Protected the executionLog using a lock.
 
-**How I solved it**: 
+Challenges encountered:
+Didn’t know before that ArrayList is not thread-safe.
 
-**Testing approach**: 
+How I solved it:
+Wrapped add() inside lock.
 
-**Time spent**: 
+Testing approach:
+Ran it multiple times to see if any errors show.
+
+Time spent: 45 minutes
 
 ---
 
-## Part 2: Technical Questions (1 mark)
+### Entry 4 - May 1, 2026 - 5:00 PM
+
+What I implemented:
+Added Semaphore to control CPU access.
+
+Challenges encountered:
+Wasn’t sure where to put acquire and release.
+
+How I solved it:
+Put acquire at the start and release inside finally.
+
+Testing approach:
+Checked that only one process runs at a time.
+
+Time spent: around 1 hour
+
+---
+
+### Entry 5 - May 1, 2026 - 7:00 PM
+
+What I implemented:
+Final testing and small fixes.
+
+Challenges encountered:
+Making sure everything works together without issues.
+
+How I solved it:
+Just kept testing and adjusting.
+
+Testing approach:
+Ran the program multiple times to check stability.
+
+Time spent: 40 minutes
+
+---
+
+## Part 2: Technical Questions
 
 ### Question 1: Race Conditions
-**Q**: Identify and explain TWO race conditions in the original code. For each:
-- What shared resource is affected?
-- Why is concurrent access a problem?
-- What incorrect behavior could occur?
 
-**Your Answer**:
-
-[Your answer here - 4-6 sentences with code examples]
+One race condition is in contextSwitchCount because multiple threads can update it at the same time, which may cause incorrect values. Another one is executionLog since it is an ArrayList and not thread-safe. If multiple threads try to add elements at the same time, it can lead to inconsistent data or even exceptions. Without synchronization, results can be wrong or unpredictable.
 
 ---
 
 ### Question 2: Locks vs Semaphores
-**Q**: Explain the difference between ReentrantLock and Semaphore. Where did you use each in your code and why?
 
-**Your Answer**:
-
-[Your answer here - explain your implementation choices]
+ReentrantLock is used to make sure only one thread accesses a critical section at a time. Semaphore controls how many threads can access a resource. In my code, I used ReentrantLock to protect shared variables like counters and logs. I used a Semaphore with 1 permit to simulate CPU access, so only one process runs at a time.
 
 ---
 
 ### Question 3: Deadlock Prevention
-**Q**: What is deadlock? Explain TWO prevention techniques and what you did to prevent deadlocks in your code.
 
-**Your Answer**:
-
-[Your answer here - reference try-finally blocks, lock ordering, etc.]
+Deadlock happens when threads wait for each other and nothing moves. One way to prevent it is using try-finally so locks are always released. Another way is to avoid complicated locking or nested locks. In my code, I made sure to always release locks and semaphore in finally.
 
 ---
 
-### Question 4: Lock Granularity Design Decision 
-**Q**: For Task 1 (protecting the three counters), explain your lock design choice:
-- Did you use ONE lock for all three counters (coarse-grained) OR separate locks for each counter (fine-grained)?
-- Explain WHY you made this choice
-- What are the trade-offs between the two approaches?
-- Given that the three counters are independent, which approach provides better concurrency and why?
+### Question 4: Lock Granularity Design Decision
 
-**Your Answer**:
-
-[Your answer here - explain coarse-grained vs fine-grained locking, independence of counters, concurrency implications. Show understanding of when to use each approach. 5-8 sentences expected.]
+I used separate locks for each counter. I chose this because each variable is independent, so no need to block everything with one lock. This gives better performance because threads can work in parallel. The downside is that it makes the code a bit more complex. Using one lock is simpler but reduces concurrency. So in this case, separate locks are better.
 
 ---
 
-## Part 3: Synchronization Analysis (1 mark)
+## Part 3: Synchronization Analysis
 
 ### Critical Section #1: Counter Variables
 
-**Which variables**: 
+Which variables:
+contextSwitchCount, completedProcessCount, totalWaitingTime
 
-**Why they need protection**: 
+Why they need protection:
+Because multiple threads update them at the same time.
 
-**Synchronization mechanism used**: 
+Synchronization mechanism used:
+ReentrantLock
 
-**Code snippet**:
+Code snippet:
+
 ```java
-// Paste your implementation here
+contextSwitchLock.lock();
+try {
+    contextSwitchCount++;
+} finally {
+    contextSwitchLock.unlock();
+}
 ```
 
-**Justification**: 
+Justification:
+Prevents incorrect updates due to concurrent access.
 
 ---
 
 ### Critical Section #2: Execution Log
 
-**What resource**: 
+What resource:
+executionLog
 
-**Why it needs protection**: 
+Why it needs protection:
+Because ArrayList is not thread-safe.
 
-**Synchronization mechanism used**: 
+Synchronization mechanism used:
+ReentrantLock
 
-**Code snippet**:
+Code snippet:
+
 ```java
-// Paste your implementation here
+logLock.lock();
+try {
+    executionLog.add(message);
+} finally {
+    logLock.unlock();
+}
 ```
 
-**Justification**: 
+Justification:
+Ensures safe access and avoids errors.
 
 ---
 
 ### Critical Section #3: CPU Semaphore
 
-**Purpose of semaphore**: 
+Purpose of semaphore:
+Control access to CPU
 
-**Number of permits and why**: 
+Number of permits and why:
+1 (only one process at a time)
 
-**Where implemented**: 
+Where implemented:
+Inside run() and runToCompletion()
 
-**Code snippet**:
+Code snippet:
+
 ```java
-// Paste your implementation here
+SharedResources.cpuSemaphore.acquire();
+try {
+    // execution
+} finally {
+    SharedResources.cpuSemaphore.release();
+}
 ```
 
-**Effect on program behavior**: 
+Effect on program behavior:
+Makes sure processes don’t run at the same time.
 
 ---
 
-## Part 4: Testing and Verification (2 marks)
+## Part 4: Testing and Verification
 
 ### Test 1: Consistency Check
-**What I tested**: Running program multiple times to verify consistent results
 
-**Testing procedure**: 
-```bash
-# Commands used (run the program at least 5 times)
-```
+Testing procedure:
+Ran the program multiple times.
 
-**Results**: 
-(Show that running multiple times produces consistent, correct results)
+Results:
+The program worked fine without errors and results looked consistent.
 
-**Why synchronization is necessary**: 
-(Explain what race conditions COULD occur without synchronization, even if you didn't observe them. Explain which shared resources need protection and why.)
+Why synchronization is necessary:
+Without it, shared variables could get wrong values and logs might break.
 
-**Conclusion**: 
+Conclusion:
+Synchronization keeps results correct.
 
 ---
 
 ### Test 2: Exception Testing
-**What I tested**: Checking for ConcurrentModificationException
 
-**Testing procedure**: 
+Testing procedure:
+Checked if any ConcurrentModificationException appears.
 
-**Results**: 
+Results:
+No exceptions happened.
 
-**What this proves**: 
+What this proves:
+executionLog is properly protected.
 
 ---
 
 ### Test 3: Correctness Verification
-**What I tested**: Verifying correct final values (total burst time, context switches, etc.)
 
-**Expected values**: 
+Expected values:
+All processes finish correctly.
 
-**Actual values**: 
+Actual values:
+Program output looks correct.
 
-**Analysis**: 
+Analysis:
+Everything works as expected.
 
 ---
 
 ### Test 4: Different Scenarios
-**Scenario tested**: [e.g., different time quantum, more processes, etc.]
 
-**Purpose**: 
+Scenario tested:
+Different number of processes
 
-**Results**: 
+Purpose:
+Check stability
 
-**What I learned**: 
+Results:
+Program still worked fine
+
+What I learned:
+Synchronization is reliable
 
 ---
 
 ## Part 5: Reflection and Learning
 
-### What I learned about synchronization:
+What I learned about synchronization:
+At first it was confusing, but I understood that race conditions happen when multiple threads access the same data. Using locks and semaphores helps control that. I also learned that even simple variables can cause problems if not protected. After testing, I saw how important synchronization is to keep results correct.
 
-[6-8 sentences about key concepts, challenges, insights]
+Real-world applications:
 
----
+Example 1:
+Bank systems where multiple users access the same account.
 
-### Real-world applications:
+Example 2:
+Operating systems scheduling processes.
 
-Give TWO examples where synchronization is critical:
-
-**Example 1**: 
-
-**Example 2**: 
-
----
-
-### How I would explain synchronization to others:
-
-[Explain to someone who just finished Assignment 1 - use simple terms and analogies]
+How I would explain synchronization:
+It’s like letting one person use something at a time so no one messes things up.
 
 ---
 
 ## Part 6: GitHub Repository Information
 
-**Repository URL**: 
+Repository URL:
+[حط رابط GitHub هنا]
 
-**Number of commits**: 
+Number of commits:
+4
 
-**Commit messages**: 
-1. 
-2. 
-3. 
-4. 
+Commit messages:
+
+1. Set student ID
+2. Added locks
+3. Added semaphore
+4. Final testing
 
 ---
 
 ## Summary
 
-**Total time spent on assignment**: 
+Total time spent on assignment:
+Around 4–5 hours
 
-**Key takeaways**: 
-1. 
-2. 
-3. 
+Key takeaways:
 
-**Most challenging aspect**: 
+1. Learned about race conditions
+2. Learned how locks work
+3. Learned how semaphores control threads
 
-**What I'm most proud of**: 
+Most challenging aspect:
+Understanding synchronization at the beginning
+
+What I'm most proud of:
+Getting everything to work correctly without errors
 
 ---
-
-**End of Documentation**
